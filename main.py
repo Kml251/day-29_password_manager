@@ -28,6 +28,8 @@ def save_password():
     website = website_entry.get()
     mail = mail_entry.get()
     password = password_entry.get()
+
+    # Create a new dictionary for JSON format
     new_data = {
         website: {
             "email": mail,
@@ -35,8 +37,8 @@ def save_password():
         }
     }
 
-    # Check if all required field filled
-    if website == "" or mail == "" or password == "":
+    # Check if all required fields are filled
+    if len(website) == 0 or len(mail) == 0 or len(password) == 0:
         messagebox.showerror("Oops!", "Please enter all required information")
     else:
         try:
@@ -46,6 +48,7 @@ def save_password():
 
         except FileNotFoundError:
             with open("data.json", "w") as data_file:
+                # Create a new file for saving the data
                 json.dump(new_data, data_file, indent=4)
         else:
             # Update old data
@@ -92,8 +95,6 @@ password_entry = Entry(width=21)
 password_entry.grid(column=1, row=3)
 
 # Button
-search_button = Button(text="Search")
-search_button.grid(column=2, row=1, columnspan=2)
 generate_button = Button(text="Generate Password", command=generate_password)
 generate_button.grid(column=2, row=3)
 add_button = Button(text="Add", width=41, command=save_password)
