@@ -61,6 +61,25 @@ def save_password():
             website_entry.delete(0, END)
             password_entry.delete(0, END)
 
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+def search_password():
+    # Call the data for searching
+    website = website_entry.get().title()
+
+    # Catch if the file not exist yet
+    try:
+        with open("data.json", "r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error!", message="No Data File found.")
+    else:
+        # Search the entry if the data exists
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+            messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
+        else:
+            messagebox.showinfo(title="Error!", message=f"No details found for {website}.")
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -84,20 +103,23 @@ password_label = Label(text="Password:")
 password_label.grid(column=0, row=3)
 
 # Entry
-website_entry = Entry(width=21)
-website_entry.grid(column=1, row=1, columnspan=2)
+website_entry = Entry(width=25)
+website_entry.grid(column=1, row=1)
 website_entry.focus()
-mail_entry = Entry(width=40)
+mail_entry = Entry(width=45)
 mail_entry.grid(column=1, row=2, columnspan=2)
 # Shown a text on the entry field.
 mail_entry.insert(0, "user@mail.com")
-password_entry = Entry(width=21)
+password_entry = Entry(width=25)
 password_entry.grid(column=1, row=3)
 
 # Button
+# Create a new button for searching data.
+search_button = Button(text="Search", width=14, command=search_password)
+search_button.grid(column=2, row=1)
 generate_button = Button(text="Generate Password", command=generate_password)
 generate_button.grid(column=2, row=3)
-add_button = Button(text="Add", width=41, command=save_password)
+add_button = Button(text="Add", width=46, command=save_password)
 add_button.grid(column=1, row=4, columnspan=3)
 
 window.mainloop()
