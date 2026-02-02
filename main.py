@@ -39,20 +39,25 @@ def save_password():
     if website == "" or mail == "" or password == "":
         messagebox.showerror("Oops!", "Please enter all required information")
     else:
-        with open("data.json", "r") as data_file:
-            # Read the old data
-            data = json.load(data_file)
+        try:
+            with open("data.json", "r") as data_file:
+                # Read the old data
+                data = json.load(data_file)
+
+        except FileNotFoundError:
+            with open("data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+        else:
             # Update old data
             data.update(new_data)
 
-        with open("data.json", "w") as data_file:
-            # Save updated data
-            json.dump(data, data_file, indent=4)
-
+            with open("data.json", "w") as data_file:
+                # Save updated data
+                json.dump(data, data_file, indent=4)
+        finally:
             website_entry.delete(0, END)
             password_entry.delete(0, END)
-        # else:
-        #     messagebox.showerror("Error", "Please enter all required information")
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
